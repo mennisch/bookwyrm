@@ -31,3 +31,5 @@ nginx/default.conf
 
 #macOS
 **/.DS_Store
+/.bash_history
+/.tramp_history
