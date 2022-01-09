@@ -33,3 +33,4 @@ nginx/default.conf
 **/.DS_Store
 /.bash_history
 /.tramp_history
+/.ssh/
