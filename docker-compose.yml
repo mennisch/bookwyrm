@@ -13,16 +13,6 @@ services:
       - ./nginx:/etc/nginx/conf.d
       - static_volume:/app/static
       - media_volume:/app/images
-  db:
-    build: postgres-docker
-    env_file: .env
-    entrypoint: /bookwyrm-entrypoint.sh
-    command: cron postgres
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-      - backups:/backups
-    networks:
-      - main
   web:
     build: .
     env_file: .env
@@ -31,8 +21,8 @@ services:
       - .:/app
       - static_volume:/app/static
       - media_volume:/app/images
+      - /var/run/postgresql:/var/run/postgresql
     depends_on:
-      - db
       - celery_worker
       - redis_activity
     networks:
@@ -69,8 +59,8 @@ services:
       - .:/app
       - static_volume:/app/static
       - media_volume:/app/images
+      - /var/run/postgresql:/var/run/postgresql
     depends_on:
-      - db
       - redis_broker
     restart: on-failure
   flower:
@@ -84,12 +74,9 @@ services:
     networks:
       - main
     depends_on:
-      - db
       - redis_broker
     restart: on-failure
 volumes:
-  pgdata:
-  backups:
   static_volume:
   media_volume:
   redis_broker_data:
