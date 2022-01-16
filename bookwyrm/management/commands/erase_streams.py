@@ -4,12 +4,7 @@ import redis
 
 from bookwyrm import settings
 
-r = redis.Redis(
-    host=settings.REDIS_ACTIVITY_HOST,
-    port=settings.REDIS_ACTIVITY_PORT,
-    password=settings.REDIS_ACTIVITY_PASSWORD,
-    db=0,
-)
+r = redis.Redis.from_url(settings.REDIS_ACTIVITY_URL)
 
 
 def erase_streams():

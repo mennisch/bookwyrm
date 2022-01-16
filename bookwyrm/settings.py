@@ -110,9 +110,7 @@ TEMPLATES = [
 WSGI_APPLICATION = "bookwyrm.wsgi.application"
 
 # redis/activity streams settings
-REDIS_ACTIVITY_HOST = env("REDIS_ACTIVITY_HOST", "localhost")
-REDIS_ACTIVITY_PORT = env("REDIS_ACTIVITY_PORT", 6379)
-REDIS_ACTIVITY_PASSWORD = env("REDIS_ACTIVITY_PASSWORD", None)
+REDIS_ACTIVITY_URL = env("REDIS_ACTIVITY_URL", f"redis://localhost:6379/0")
 
 MAX_STREAM_LENGTH = int(env("MAX_STREAM_LENGTH", 200))
 
@@ -139,7 +137,7 @@ else:
     CACHES = {
         "default": {
             "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": f"redis://:{REDIS_ACTIVITY_PASSWORD}@{REDIS_ACTIVITY_HOST}:{REDIS_ACTIVITY_PORT}/0",
+            "LOCATION": REDIS_ACTIVITY_URL,
             "OPTIONS": {
                 "CLIENT_CLASS": "django_redis.client.DefaultClient",
             },
