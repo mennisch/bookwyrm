@@ -32,3 +32,4 @@
 /.tramp_history
 /.ssh/
 /.psql_history
+/.docker/
