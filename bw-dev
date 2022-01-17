@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # exit on errors
 set -e
@@ -15,15 +15,15 @@ trap - EXIT
 # show commands as they're executed
 set -x
 function runweb {
-    docker-compose run --rm web "$@"
+    docker compose run --rm web "$@"
 }
 
 function execdb {
-    docker-compose exec db $@
+    docker compose exec db $@
 }
 
 function execweb {
-    docker-compose exec web "$@"
+    docker compose exec web "$@"
 }
 
 function initdb {
@@ -52,7 +52,7 @@ set -x
 
 case "$CMD" in
     up)
-        docker-compose up --build "$@"
+        docker compose up --build "$@"
         ;;
     initdb)
         initdb "$@"
@@ -70,20 +70,20 @@ case "$CMD" in
         execdb psql -U ${POSTGRES_USER} ${POSTGRES_DB}
         ;;
     restart_celery)
-        docker-compose restart celery_worker
+        docker compose restart celery_worker
         ;;
     collectstatic)
         runweb python manage.py collectstatic --no-input
         ;;
     build)
-        docker-compose build
+        docker compose build
         ;;
     update)
         git pull
-        docker-compose build
+        docker compose build
         runweb python manage.py migrate
         runweb python manage.py collectstatic --no-input
-        docker-compose up -d
+        docker compose up -d
         ;;
     populate_streams)
         runweb python manage.py populate_streams "$@"
