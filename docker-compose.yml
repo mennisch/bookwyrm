@@ -29,16 +29,6 @@ services:
       - main
     ports:
       - 8000:8000
-  redis_broker:
-    image: redis
-    command: redis-server --requirepass ${REDIS_BROKER_PASSWORD} --appendonly yes --port ${REDIS_BROKER_PORT}
-    volumes:
-      - ./redis.conf:/etc/redis/redis.conf
-      - redis_broker_data:/data
-    env_file: .env
-    networks:
-      - main
-    restart: on-failure
   celery_worker:
     env_file: .env
     build: .
@@ -50,8 +40,7 @@ services:
       - static_volume:/app/static
       - media_volume:/app/images
       - /run/postgresql:/run/postgresql
-    depends_on:
-      - redis_broker
+      - /run/redis/redis.sock:/run/redis/redis.sock
     restart: on-failure
   flower:
     build: .
@@ -61,14 +50,12 @@ services:
       - ${FLOWER_PORT}:${FLOWER_PORT}
     volumes:
       - .:/app
+      - /run/redis/redis.sock:/run/redis/redis.sock
     networks:
       - main
-    depends_on:
-      - redis_broker
     restart: on-failure
 volumes:
   static_volume:
   media_volume:
-  redis_broker_data:
 networks:
   main:

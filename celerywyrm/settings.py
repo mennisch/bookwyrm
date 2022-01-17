@@ -3,15 +3,13 @@
 # pylint: disable=unused-wildcard-import
 from bookwyrm.settings import *
 
-REDIS_BROKER_PASSWORD = requests.utils.quote(env("REDIS_BROKER_PASSWORD", None))
-REDIS_BROKER_HOST = env("REDIS_BROKER_HOST", "redis_broker")
-REDIS_BROKER_PORT = env("REDIS_BROKER_PORT", 6379)
+REDIS_BROKER_URL = env("REDIS_BROKER_URL", "redis://redis_broker:6379/0")
 
 CELERY_BROKER_URL = (
-    f"redis://:{REDIS_BROKER_PASSWORD}@{REDIS_BROKER_HOST}:{REDIS_BROKER_PORT}/0"
+    REDIS_BROKER_URL
 )
 CELERY_RESULT_BACKEND = (
-    f"redis://:{REDIS_BROKER_PASSWORD}@{REDIS_BROKER_HOST}:{REDIS_BROKER_PORT}/0"
+    REDIS_BROKER_URL
 )
 
 CELERY_DEFAULT_QUEUE = "low_priority"
