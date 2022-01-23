@@ -33,3 +33,4 @@
 /.ssh/
 /.psql_history
 /.docker/
+/.lesshst

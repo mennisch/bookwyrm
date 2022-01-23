@@ -1,6 +1,6 @@
 """ What you need in the database to make it work """
 from django.core.management.base import BaseCommand
-from django.contrib.auth.models import Group, Permission
+from django.contrib.auth.models import Group, Permission, User
 from django.contrib.contenttypes.models import ContentType
 
 from bookwyrm import models
@@ -55,7 +55,7 @@ def init_permissions():
         },
     ]
 
-    content_type = models.ContentType.objects.get_for_model(User)
+    content_type = ContentType.objects.get_for_model(User)
     for permission in permissions:
         permission_obj = Permission.objects.create(
             codename=permission["codename"],
@@ -164,7 +164,7 @@ class Command(BaseCommand):
             "settings",
             "linkdomain",
         ]
-        if limit not in tables:
+        if limit and limit not in tables:
             raise Exception("Invalid table limit:", limit)
 
         if not limit or limit == "group":
