@@ -3,7 +3,7 @@ FROM python:3.9
 ENV PYTHONUNBUFFERED 1
 ENV PATH $PATH:/home/bookwyrm/.local/bin
 
-RUN groupadd -g 995 redis
+RUN groupadd -g 993 redis
 RUN useradd -u 2000 -g users -G redis -d /home/bookwyrm -m bookwyrm
 RUN install -d -o bookwyrm -g users -m 0755 /app /app/static /app/images
 
